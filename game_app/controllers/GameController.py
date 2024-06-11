@@ -14,8 +14,6 @@ class GameController:
     
     @staticmethod
     def display_games(request):
-        # GameController.delete_games(request)
-
         if 'games' not in request.session:
             games = GameService.get_top_played_games()
             request.session['games'] = games
@@ -23,7 +21,8 @@ class GameController:
             games = request.session['games']
         
         page = request.GET.get('page', 1)
-        paginator = Paginator(games, 25)  # 50 jeux par page
+        # 25 jeux par page
+        paginator = Paginator(games, 25)
 
         try:
             games_page = paginator.page(page)
@@ -32,9 +31,9 @@ class GameController:
         except EmptyPage:
             games_page = paginator.page(paginator.num_pages)
         
-        # Récupérer les détails pour les jeux paginés
+        # Récupérer les détails pour les jeux paginés en parallèle
         game_ids = [game['appid'] for game in games_page]
-        game_details = [GameService.get_game_details(appid) for appid in game_ids]
+        game_details = GameService.get_games_details_parallel(game_ids)
 
         for game, details in zip(games_page, game_details):
             game['header_image'] = details.get('header_image')

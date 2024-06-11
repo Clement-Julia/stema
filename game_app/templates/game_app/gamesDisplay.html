@@ -7,9 +7,6 @@
 {% block content %}
     <h1 class="mt-4">Top 200 Most Played Games</h1>
 
-    <h2>JSON Data</h2>
-    <pre>{{ games_json|safe }}</pre>
-
     <div class="d-flex flex-wrap justify-content-center">
         {% for game in games %}
             <div class="card col-12 col-md-3 col-lg-2 m-1 p-0" id="game-{{ game.appid }}">
@@ -18,9 +15,10 @@
                 </div>
                 <div class="card-body p-0">
                     {% if game.header_image %}
-                        <img src="{{ game.header_image }}" alt="{{ game.name }} cover" class="mr-3 w-100">
+                        <img src="{{ game.header_image }}" alt="{{ game.name }} cover" class="w-100">
                     {% else %}
-                        <span class="mr-3" style="width: 50px; height: 50px; background-color: #5f0ae7;"></span>
+                        {% load static %}
+                        <img src="{% static 'images/no_image.png' %}" alt="No image found" class="w-100">
                     {% endif %}
                 </div>
                 <div class="card-footer">

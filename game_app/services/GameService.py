@@ -2,6 +2,7 @@
 
 import requests
 from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor
 
 class GameService:
     STEAM_CHARTS_URL = "https://steamcharts.com/top/p.{}"
@@ -10,7 +11,8 @@ class GameService:
     @staticmethod
     def get_top_played_games():
         games = []
-        for page in range(1, 8):  # Pages 1 to 8
+         # Pages 1 à 8 de steamcharts pour un total de 200 jeux
+        for page in range(1, 8):
             url = GameService.STEAM_CHARTS_URL.format(page)
             response = requests.get(url)
             if response.status_code == 200:
@@ -20,12 +22,13 @@ class GameService:
                     link = row.select_one('td:nth-child(2) a')
                     name = link.text.strip()
                     href = link['href']
-                    appid = href.split('/')[-1]  # Extraire l'ID Steam à partir de l'URL
-                    current_players = row.select_one('td:nth-child(3)').text.strip()
+                    # Extraire l'ID Steam à partir de l'URL
+                    appid = href.split('/')[-1] 
+                    players = row.select_one('td:nth-child(3)').text.strip()
                     games.append({
                         'name': name,
                         'appid': appid,
-                        'current_players': current_players
+                        'players': players
                     })
         return games
 
@@ -43,10 +46,12 @@ class GameService:
                     'developers': data.get('developers', []),
                     'publishers': data.get('publishers', []),
                     'price_overview': data.get('price_overview', {}).get('final_formatted', "Free"),
-                    'header_image': data.get('header_image')  # URL de l'image de couverture
+                    'header_image': data.get('header_image')
                 }
         return {}
 
     @staticmethod
-    def get_game_by_id(game_id):
-        return GameService.get_game_details(game_id)
+    def get_games_details_parallel(game_ids):
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            details = list(executor.map(GameService.get_game_details, game_ids))
+        return details
