@@ -4,4 +4,3 @@ django-dotenv
 psycopg2
 markdown
 django-filter
-rest-framwork

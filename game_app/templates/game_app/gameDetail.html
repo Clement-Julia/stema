@@ -1,0 +1,17 @@
+<!-- game_app/templates/game_app/gameDetail.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ game.name }}</title>
+</head>
+<body>
+    <h1>{{ game.name }}</h1>
+    <p>{{ game.short_description }}</p>
+    <ul>
+        <li>Release Date: {{ game.release_date.date }}</li>
+        <li>Developer: {{ game.developers|join:", " }}</li>
+        <li>Publisher: {{ game.publishers|join:", " }}</li>
+    </ul>
+</body>
+</html>

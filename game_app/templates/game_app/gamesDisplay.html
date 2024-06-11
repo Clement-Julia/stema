@@ -1,0 +1,48 @@
+<!-- game_app/templates/game_app/gamesDisplay.html -->
+
+{% extends "base.html" %}
+
+{% block title %}Top 200 Most Played Games{% endblock %}
+
+{% block content %}
+    <h1 class="mt-4">Top 200 Most Played Games</h1>
+
+    <h2>JSON Data</h2>
+    <pre>{{ games_json|safe }}</pre>
+
+    <div class="d-flex flex-wrap justify-content-center">
+        {% for game in games %}
+            <div class="card col-12 col-md-3 col-lg-2 m-1 p-0" id="game-{{ game.appid }}">
+                <div class="card-header">
+                    <a href="{% url 'game_detail' game.appid %}">{{ game.name }}</a>
+                </div>
+                <div class="card-body p-0">
+                    {% if game.header_image %}
+                        <img src="{{ game.header_image }}" alt="{{ game.name }} cover" class="mr-3 w-100">
+                    {% else %}
+                        <span class="mr-3" style="width: 50px; height: 50px; background-color: #5f0ae7;"></span>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    {{ game.current_players }} players
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if games.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ games.previous_page_number }}">previous</a></li>
+            {% endif %}
+
+            <li class="page-item active"><span class="page-link">Page {{ games.number }} of {{ games.paginator.num_pages }}.</span></li>
+
+            {% if games.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ games.next_page_number }}">next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ games.paginator.num_pages }}">last &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}

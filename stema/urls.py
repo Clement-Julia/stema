@@ -14,10 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# stema/urls.py
+
 from django.contrib import admin
 from django.urls import path, include
+from game_app.controllers.GameController import GameController
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('product/', include('product.urls')),
+    path('', GameController.home, name='home'),
+    path('game_app/', include('game_app.urls')),
 ]
