@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil</title>
+</head>
+<body>
+    <h1>Profil de {{ request.user.username }}</h1>
+    <p>Nom d'utilisateur: {{ request.user.username }}</p>
+    <p>Email: {{ request.user.email }}</p>
+    <!-- Ajoutez d'autres informations de profil ici -->
+</body>
+</html>
