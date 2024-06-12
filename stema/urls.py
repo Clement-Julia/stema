@@ -21,4 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('mods/', include('mods.urls')),
     # path('mods/view/<str:game_domain_name>/', views.view_mods, name='view_mods'),
+    path('accounts/', include('allauth.urls')),
+    path('chat/', include('app_chat.urls')),
+    # path('product/', include('product.urls')),
 ]
