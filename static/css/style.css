@@ -9,15 +9,51 @@ body {
     line-height: 1.5;
     text-align: left;
     overflow-x: hidden;
-    background-attachment: fixed;
+    /* background-attachment: fixed;
     background-image: linear-gradient(to right bottom, #3747ce, #0068e0, #0084ea, #009dec, #00b4eb, #03c2ec, #29cfeb, #49dbe8, #47e3e8, #4aece6, #52f3e2, #5ffbdd);
     background-size: 100%;
-    caret-color: transparent;
-    padding-bottom: 1rem;
+    caret-color: transparent; */
+    background-color: #16202D;
 }
 
 .bg-steam-dark {
-    background-color: #171a21;
+    background-color: #16202D;
+}
+.bg-steam-darker {
+    background-color: #0B1017;
+}
+.bg-steam-darkened {
+    background-color: #0E2435;
+}
+.bg-steam-dim {
+    background-color: rgba(9, 91, 139, 0.1);
+}
+.border16 {
+    border-radius: 16px;
+}
+.btrr15 {
+    border-top-right-radius: 15px !important;
+}
+.btlr15 {
+    border-top-left-radius: 15px !important;
+}
+.bbrr15 {
+    border-bottom-right-radius: 15px !important;
+}
+.bblr15 {
+    border-bottom-left-radius: 15px !important;
+}
+.white {
+    color: #fff;
+}
+.fitcontent {
+    width: fit-content;
+}
+.h-fitcontent {
+    height: fit-content;
+}
+.mincontent {
+    width: min-content;
 }
 
 /* ------------------------------------------------------- Games Display ------------------------------------------------------- */
@@ -31,20 +67,25 @@ body {
     border-top-right-radius: 15px;
 }
 .gameCard .card-footer {
-    background: rgba(255, 255, 255, 0.65);
+    background: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+    
+    font-size: 0.85rem;
+}
+.gameCard .card-footer > a {
+    text-decoration: none;
 }
 .pagination > li > a {
-    background: rgba(255, 255, 255, 0.65);
+    background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: none
 }
 .pagination > li > a:hover {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: none
@@ -64,4 +105,55 @@ body {
 }
 .player-count i {
     margin-right: 5px;
+}
+
+/* ------------------------------------------------------- Game Detail ------------------------------------------------------- */
+.transparent-dark {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: none
+}
+.gameDetailImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+.listSpec > div > li {
+    border: 1px solid #0E2435;
+    
+}
+.metacritic-score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 15px;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+}
+.metacritic-score.green {
+    background-color: #66cc33;
+}
+.metacritic-score.yellow {
+    background-color: #ffcc33;
+}
+.metacritic-score.red {
+    background-color: #ff3333;
+}
+.metacritic-logo {
+    height: 50px;
+}
+.metacritic-text {
+    width: 180px;
+    height: auto;
+}
+.cardDesc > img, .cardDesc img {
+    width: 100%;
 }

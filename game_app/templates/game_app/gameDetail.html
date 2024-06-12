@@ -6,38 +6,82 @@
 {% block title %}{{ game.name }}{% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h1>{{ game.name }}</h1>
-                <img src="{{ game.header_image }}" alt="{{ game.name }} cover" class="img-fluid mb-3">
-                <p>{{ game.short_description }}</p>
-                <p>{{ game.detailed_description|safe }}</p>
+<div class="container">
+    <div class="card border-0 border16 transparent-dark white">
+        <div class="card-header d-flex flex-wrap p-0">
+            <div class="col-12 col-md-7 p-0">
+                <img src="{{ game.header_image }}" alt="{{ game.name }} cover" class="gameDetailImage">
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h2>Informations du jeu</h2>
-                <ul class="list-group">
-                    <li class="list-group-item"><strong>Date de sortie:</strong> {{ game.release_date }}</li>
-                    <li class="list-group-item"><strong>Développeurs:</strong> {{ game.developers|join:", " }}</li>
-                    <li class="list-group-item"><strong>Éditeurs:</strong> {{ game.publishers|join:", " }}</li>
-                    <li class="list-group-item"><strong>Prix:</strong> {{ game.price_overview }}</li>
-                    <li class="list-group-item"><strong>Plateformes:</strong> 
-                        {% if game.platforms.windows %}Windows{% endif %}
-                        {% if game.platforms.mac %}, Mac{% endif %}
-                        {% if game.platforms.linux %}, Linux{% endif %}
-                    </li>
-                </ul>
-                <h2>Captures d'écran</h2>
-                <div class="row">
-                    {% for screenshot in game.screenshots %}
-                        <div class="col-md-4">
-                            <img src="{{ screenshot.path_thumbnail }}" alt="Screenshot" class="img-fluid mb-3">
-                        </div>
-                    {% endfor %}
+            <div class="col-12 col-md-5 p-2 d-flex flex-column justify-content-between">
+                <div class="d-flex flex-column">
+                    <h1 class="text-center display-5 fs-1">{{ game.name }}</h1>
+                    <div class="mt-4">{{ game.short_description }}</div>
+                </div>
+                <div>
+                    <div class="text-center"><strong>Prix:</strong> {{ game.price_overview }}</div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="card border-0 border16 transparent-dark white mt-3">
+        <div class="col-12">
+            <ul class="list-group listSpec">
+                <div class="d-flex flex-row flex-wrap">
+                    <li class="list-group-item transparent-dark white btlr15 col-12 col-md-6"><strong>Date de sortie:</strong> {{ game.release_date }}</li>
+                    <li class="list-group-item transparent-dark white btrr15 col-12 col-md-6"><strong>Plateforme(s):</strong> 
+                        {% if game.platforms.windows %}Windows{% endif %}
+                        {% if game.platforms.mac %}- Mac{% endif %}
+                        {% if game.platforms.linux %}- Linux{% endif %}
+                    </li>
+                </div>
+                <div class="d-flex flex-row flex-wrap">
+                    <li class="list-group-item transparent-dark white col-12 col-md-6"><strong>Développeur(s):</strong> {{ game.developers|join:", " }}</li>
+                    <li class="list-group-item transparent-dark white col-12 col-md-6"><strong>Éditeur(s):</strong> {{ game.publishers|join:", " }}</li>
+                </div>
+                <div class="d-flex">
+                    <li class="list-group-item transparent-dark white bbrr15 bblr15 col-12"><strong>Genre(s):</strong> {{ game.genres|join:", " }}</li>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end my-3">
+        <div class="card transparent-dark white fitcontent p-0">
+            {% if game.metacritic_score %}
+            <div class="d-flex p-3">
+                <div class="metacritic-score {{ game.metacritic_color }} mx-1">{{ game.metacritic_score }}</div>
+                <div class="d-flex align-items-center">
+                    <img src="{% static 'images/metacritic_logo.png' %}" alt="Metacritic Logo" class="metacritic-logo mx-2">
+                    <div class="d-flex flex-column ms-1">
+                        <img src="{% static 'images/metacritic_text.png' %}" alt="Metacritic Text" class="metacritic-text">
+                        <a href="{{ game.metacritic_url }}" target="_blank" class="fs-6 ml-2">Lire les critiques</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                <div class="list-group-item"><strong>Metacritic:</strong> Pas de score disponible</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-around mt-3">
+
+        <div class="card cardDesc bg-steam-darker white col-12 col-md-8 py-2 mb-2 mb-md-0">
+            <div class="d-flex flex-column">
+                {{ game.detailed_description|safe }}
+            </div>
+        </div>
+
+        <div class="card transparent-dark white col-12 col-md-3 h-fitcontent mt-2 mt-md-0">
+            <h2 class="text-center">Captures d'écran</h2>
+            {% for screenshot in game.screenshots %}
+                <div class="col-12 col-md-12">
+                    <img src="{{ screenshot.path_thumbnail }}" alt="Screenshot" class="img-fluid">
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
 {% endblock %}

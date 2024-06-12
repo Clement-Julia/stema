@@ -44,6 +44,8 @@ class GameService:
             if response.status_code == 200:
                 data = response.json().get(str(appid), {}).get('data', {})
                 if data:
+                    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+                    print(GameService.get_metacritic_color(data.get('metacritic', {}).get('score')))
                     game_details = {
                         'name': data.get('name'),
                         'short_description': data.get('short_description'),
@@ -54,7 +56,11 @@ class GameService:
                         'header_image': data.get('header_image'),
                         'detailed_description': data.get('detailed_description', ''),
                         'platforms': data.get('platforms', {}),
-                        'screenshots': data.get('screenshots', [])
+                        'screenshots': data.get('screenshots', []),
+                        'metacritic_score': data.get('metacritic', {}).get('score'),
+                        'metacritic_url': data.get('metacritic', {}).get('url'),
+                        'metacritic_color': GameService.get_metacritic_color(data.get('metacritic', {}).get('score')),
+                        'genres': [genre['description'] for genre in data.get('genres', [])]
                     }
                     cache.set(cache_key, game_details, timeout=60*60)  # Cache for 1 hour
                 else:
@@ -92,3 +98,14 @@ class GameService:
         with ThreadPoolExecutor(max_workers=10) as executor:
             header_images = list(executor.map(GameService.get_game_image, game_ids))
         return header_images
+    
+    @staticmethod
+    def get_metacritic_color(score):
+        if score is not None:
+            if score >= 65:
+                return "green"
+            elif 45 <= score < 65:
+                return "yellow"
+            else:
+                return "red"
+        return "green" 
