@@ -3,6 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
+from django.core.cache import cache
 
 class GameService:
     STEAM_CHARTS_URL = "https://steamcharts.com/top/p.{}"
@@ -34,24 +35,60 @@ class GameService:
 
     @staticmethod
     def get_game_details(appid):
-        endpoint = GameService.STORE_URL.format(appid)
-        response = requests.get(endpoint)
-        if response.status_code == 200:
-            data = response.json().get(str(appid), {}).get('data', {})
-            if data:
-                return {
-                    'name': data.get('name'),
-                    'short_description': data.get('short_description'),
-                    'release_date': data.get('release_date', {}).get('date'),
-                    'developers': data.get('developers', []),
-                    'publishers': data.get('publishers', []),
-                    'price_overview': data.get('price_overview', {}).get('final_formatted', "Free"),
-                    'header_image': data.get('header_image')
-                }
-        return {}
+        cache_key = f'game_details_{appid}'
+        game_details = cache.get(cache_key)
 
+        if not game_details:
+            endpoint = GameService.STORE_URL.format(appid)
+            response = requests.get(endpoint)
+            if response.status_code == 200:
+                data = response.json().get(str(appid), {}).get('data', {})
+                if data:
+                    game_details = {
+                        'name': data.get('name'),
+                        'short_description': data.get('short_description'),
+                        'release_date': data.get('release_date', {}).get('date'),
+                        'developers': data.get('developers', []),
+                        'publishers': data.get('publishers', []),
+                        'price_overview': data.get('price_overview', {}).get('final_formatted', "Free"),
+                        'header_image': data.get('header_image'),
+                        'detailed_description': data.get('detailed_description', ''),
+                        'platforms': data.get('platforms', {}),
+                        'screenshots': data.get('screenshots', [])
+                    }
+                    cache.set(cache_key, game_details, timeout=60*60)  # Cache for 1 hour
+                else:
+                    game_details = {}
+            else:
+                game_details = {}
+        return game_details
+
+    @staticmethod
+    def get_game_image(appid):
+        cache_key = f'get_game_image{appid}'
+        header_image = cache.get(cache_key)
+
+        if not header_image:
+            endpoint = GameService.STORE_URL.format(appid)
+            response = requests.get(endpoint)
+            if response.status_code == 200:
+                data = response.json().get(str(appid), {}).get('data', {})
+                if data:
+                    header_image = data.get('header_image')
+                    cache.set(cache_key, header_image, timeout=60*60)
+            else:
+                header_image = None
+            
+        return header_image
+    
     @staticmethod
     def get_games_details_parallel(game_ids):
         with ThreadPoolExecutor(max_workers=10) as executor:
             details = list(executor.map(GameService.get_game_details, game_ids))
         return details
+    
+    @staticmethod
+    def get_games_images_parallel(game_ids):
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            header_images = list(executor.map(GameService.get_game_image, game_ids))
+        return header_images

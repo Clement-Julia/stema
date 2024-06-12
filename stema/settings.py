@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_filters',
     'game_app',
     'django_dump_die',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_dump_die.middleware.DumpAndDieMiddleware',
 ]
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache'),
+    }
+}
 
 ROOT_URLCONF = 'stema.urls'
 

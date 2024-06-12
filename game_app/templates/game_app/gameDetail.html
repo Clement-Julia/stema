@@ -1,17 +1,43 @@
 <!-- game_app/templates/game_app/gameDetail.html -->
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ game.name }}</title>
-</head>
-<body>
-    <h1>{{ game.name }}</h1>
-    <p>{{ game.short_description }}</p>
-    <ul>
-        <li>Release Date: {{ game.release_date.date }}</li>
-        <li>Developer: {{ game.developers|join:", " }}</li>
-        <li>Publisher: {{ game.publishers|join:", " }}</li>
-    </ul>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ game.name }}{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>{{ game.name }}</h1>
+                <img src="{{ game.header_image }}" alt="{{ game.name }} cover" class="img-fluid mb-3">
+                <p>{{ game.short_description }}</p>
+                <p>{{ game.detailed_description|safe }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Informations du jeu</h2>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Date de sortie:</strong> {{ game.release_date }}</li>
+                    <li class="list-group-item"><strong>Développeurs:</strong> {{ game.developers|join:", " }}</li>
+                    <li class="list-group-item"><strong>Éditeurs:</strong> {{ game.publishers|join:", " }}</li>
+                    <li class="list-group-item"><strong>Prix:</strong> {{ game.price_overview }}</li>
+                    <li class="list-group-item"><strong>Plateformes:</strong> 
+                        {% if game.platforms.windows %}Windows{% endif %}
+                        {% if game.platforms.mac %}, Mac{% endif %}
+                        {% if game.platforms.linux %}, Linux{% endif %}
+                    </li>
+                </ul>
+                <h2>Captures d'écran</h2>
+                <div class="row">
+                    {% for screenshot in game.screenshots %}
+                        <div class="col-md-4">
+                            <img src="{{ screenshot.path_thumbnail }}" alt="Screenshot" class="img-fluid mb-3">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

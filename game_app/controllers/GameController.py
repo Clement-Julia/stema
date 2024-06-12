@@ -21,8 +21,7 @@ class GameController:
             games = request.session['games']
         
         page = request.GET.get('page', 1)
-        # 25 jeux par page
-        paginator = Paginator(games, 25)
+        paginator = Paginator(games, 25)  # 25 jeux par page
 
         try:
             games_page = paginator.page(page)
@@ -31,12 +30,12 @@ class GameController:
         except EmptyPage:
             games_page = paginator.page(paginator.num_pages)
         
-        # Récupérer les détails pour les jeux paginés en parallèle
+        # Récupérer les images pour les jeux paginés en parallèle
         game_ids = [game['appid'] for game in games_page]
-        game_details = GameService.get_games_details_parallel(game_ids)
+        header_images = GameService.get_games_images_parallel(game_ids)
 
-        for game, details in zip(games_page, game_details):
-            game['header_image'] = details.get('header_image')
+        for game, header_image in zip(games_page, header_images):
+            game['header_image'] = header_image
 
         games_json = json.dumps(list(games_page), default=str)
 
@@ -47,12 +46,12 @@ class GameController:
     
     @staticmethod
     def display_game_by_id(request, game_id):
-        game = GameService.get_game_by_id(game_id)
+        game = GameService.get_game_details(game_id)
         return render(request, 'game_app/gameDetail.html', {'game': game})
 
     @staticmethod
     def get_game_details(request, game_id):
-        game = GameService.get_game_by_id(game_id)
+        game = GameService.get_game_details(game_id)
         return JsonResponse(game)
 
     @staticmethod
