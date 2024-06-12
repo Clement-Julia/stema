@@ -1,0 +1,29 @@
+# Django project files
+*.pyc
+*.pyo
+__pycache__/
+__pycache__\
+*.sqlite3
+
+# Static files
+staticfiles/
+media/
+
+# Secret keys
+*.env
+
+# Development files
+*.log
+db.sqlite3
+
+# IDE files
+.vscode/
+.idea/
+*.pydevproject
+*.pyc
+*.bak
+*.swp
+*~.nib
+*.swp
+*.lock
+.DS_Store

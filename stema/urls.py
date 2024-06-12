@@ -19,5 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('product/', include('product.urls')),
+    path('mods/', include('mods.urls')),
+    # path('mods/view/<str:game_domain_name>/', views.view_mods, name='view_mods'),
 ]

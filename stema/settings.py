@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'product.apps.ProductConfig',
+    'mods.apps.ModsConfig',
+    'django.contrib.humanize'
 ]
 
 MIDDLEWARE = [
@@ -73,6 +75,12 @@ TEMPLATES = [
     },
 ]
 
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 WSGI_APPLICATION = 'stema.wsgi.application'
 
 
@@ -81,12 +89,8 @@ WSGI_APPLICATION = 'stema.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DBNAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
-        'PORT': os.environ.get('POSTGRES_PORT'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
     }
 }
 
