@@ -1,0 +1,58 @@
+   <h1>Add Friend</h1>
+
+    <input type="text" id="search" placeholder="Enter username to search">
+    <div id="results"></div>
+
+    <h2>Friend Requests</h2>
+    <ul>
+        {% for request in friend_requests %}
+            <li>
+                {{ request.from_user.username }}
+                <form method="post" action="{% url 'manage_friend_request' request.id %}">
+                    {% csrf_token %}
+                    <button type="submit" name="action" value="accept">Accept</button>
+                    <button type="submit" name="action" value="decline">Decline</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        document.getElementById('search').addEventListener('keyup', function() {
+            var query = this.value;
+            if (query.length > 2) {
+                fetch(`/social/search_users/?q=${query}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        document.getElementById('results').innerHTML = data;
+                    })
+                    .catch(error => {
+                        console.error('Error during search:', error);
+                    });
+            } else {
+                document.getElementById('results').innerHTML = '';
+            }
+        });
+        function addFriend(username) {
+            fetch(``, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({username: username})
+            }).then(response => {
+                if (response.ok) {
+                    alert("Friend request sent");
+                }
+            });
+        }
+        
+    </script>
+</body>
+</html>
