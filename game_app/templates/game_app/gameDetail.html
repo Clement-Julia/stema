@@ -10,7 +10,7 @@
 
     <!-- Flèche de retour -->
     <div class="back-arrow mt-3 mb-3">
-        <a href="{% url 'games_list' %}?page={{ page }}" class="text-white">
+        <a href="{% url 'games_list' %}?page={{ page }}&search={{ search_query }}&filter_library={{ filter_library|yesno:"on," }}" class="text-white">
             <i class="fas fa-arrow-left"></i> Retour aux jeux
         </a>
     </div>
@@ -56,20 +56,29 @@
     </div>
 
     {% if user.is_authenticated %}
-    {% if game_in_library %}
-        <div class="d-flex justify-content-center my-3">
-            <button class="btn btn-success" disabled>Jeu déjà dans la bibliothèque</button>
-        </div>
-    {% else %}
-        <div class="d-flex justify-content-center my-3">
-            <form method="POST" action="{% url 'add_game_to_library' game.appid %}">
-                {% csrf_token %}
-                <input type="hidden" name="game_name" value="{{ game.name }}">
-                <button type="submit" class="btn btn-outline-primary">Ajouter le jeu à ma librairie</button>
-            </form>
-        </div>
+        {% if game_in_library %}
+            <div class="d-flex justify-content-center my-3">
+                <button class="btn btn-success" disabled>Jeu déjà dans la bibliothèque</button>
+                <form method="POST" action="{% url 'remove_game_from_library' game.appid %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger ms-2">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </form>
+            </div>
+        {% else %}
+            <div class="d-flex justify-content-center my-3">
+                <form method="POST" action="{% url 'add_game_to_library' game.appid %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="game_name" value="{{ game.name }}">
+                    <button type="submit" class="btn btn-outline-primary">Ajouter le jeu à ma librairie</button>
+                </form>
+                <button class="btn btn-outline-secondary ms-2" disabled>
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        {% endif %}
     {% endif %}
-{% endif %}
 
     <div class="d-flex justify-content-end my-3">
         <div class="card transparent-dark white fitcontent border15 p-0">
