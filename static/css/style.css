@@ -50,7 +50,7 @@ body {
     color: #fff;
 }
 .white-h:hover {
-    color: #8a8a8a;
+    color: #bebebe;
 }
 .fitcontent {
     width: fit-content;
@@ -60,6 +60,11 @@ body {
 }
 .mincontent {
     width: min-content;
+}
+.navbar-bg {
+    background: rgba(11, 16, 23, 0.65);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* ------------------------------------------------------- Games Display ------------------------------------------------------- */
@@ -142,7 +147,8 @@ body {
 .searchbar:focus::placeholder {
     color: #d1d1d1;
 }
-/* ------------------------------------------------------- Game Detail ------------------------------------------------------- */
+
+/* ------------------------------------------------------- Game Details ------------------------------------------------------- */
 .transparent-dark {
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
@@ -160,11 +166,26 @@ body {
     border: 1px solid #0E2435;
     
 }
+@media only screen and (min-width: 768px) {
+    .metacontainer {
+        margin-right: 2.5%;
+        margin-left: 3.1%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .metacontainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .metacontainer > #usergameDiv{
+        margin-bottom: 10px;
+    }
+}
 .metacritic-score {
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: white;
     font-weight: bold;
     padding: 10px;
@@ -238,6 +259,8 @@ body {
 .back-arrow i {
     margin-right: 8px;
 }
+
+/* ------------------------------------------------------- Autres ------------------------------------------------------- */
 
 /* Mention légale */
 .div_mention_legale{
