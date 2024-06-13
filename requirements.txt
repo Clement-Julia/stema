@@ -3,7 +3,6 @@ djangorestframework
 django-dotenv
 markdown
 django-filter
-
 daphne
 django-allauth
 channels
