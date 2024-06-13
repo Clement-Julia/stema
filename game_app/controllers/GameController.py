@@ -6,6 +6,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from game_app.services.ModService import NexusModsService
 from game_app.services.GameService import GameService
 from game_app.models import GameLibrary
 
@@ -74,8 +75,10 @@ class GameController:
         filter_library = request.session.get('filter_library', False)
 
         game['appid'] = game_id
+        mods = NexusModsService.fetch_mods(game['name'])
         return render(request, 'game_app/gameDetail.html', {
             'game': game,
+            'mods': mods,
             'page': page,
             'search_query': search_query,
             'filter_library': filter_library,

@@ -46,12 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework',
     'django_filters',
     'game_app',
-    'django.contrib.humanize',
     'channels',
-    'app_chat.apps.AppChatConfig',
+    'app_chat.apps.AppChatConfig'
 ]
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = [
@@ -94,6 +94,12 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
 ]
 
 WSGI_APPLICATION = 'stema.wsgi.application'
