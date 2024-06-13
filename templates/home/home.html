@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Accueil{% endblock %} 
+{% block content %}
+<body>
+    <h1 class="text-center">Welcome to Our Website</h1>
+    <p>This is the home page of our website.</p>
+    <a href="{% url 'mentions_legales' %}">Mentions légales</a>
+
+</body>
+
+{% endblock %}

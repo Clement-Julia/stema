@@ -11,7 +11,15 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="mt-4 text-center display-4">Top Games on Steam</h1>
+    <h1 class="mt-4 text-center white display-4">Top Jeux sur Stema</h1>
+    
+    <!-- Search Bar -->
+    <form method="GET" action="{% url 'games_list' %}" class="d-flex justify-content-center mb-4">
+        <div class="input-group searchbarDiv">
+            <input type="text" name="search" class="form-control searchbar" placeholder="Rechercher un jeu..." value="{{ request.GET.search|default_if_none:'' }}">
+            <button class="btn btn-outline-primary" type="submit">Rechercher</button>
+        </div>
+    </form>
     
     <div class="d-flex flex-wrap justify-content-center">
         {% for game in games %}
@@ -28,7 +36,7 @@
                     
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{% url 'game_detail' game.appid %}">{{ game.name }}</a>
+                    <a href="{% url 'game_detail' game.appid %}?page={{ games.number }}">{{ game.name }}</a>
                 </div>
             </div>
         {% endfor %}
