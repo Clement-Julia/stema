@@ -16,10 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from product.views import home,  handler404_view, profile_view, mentions_legales
+from django.contrib.auth.decorators import login_required
+
+#,#, handler500_view
+
+handler404 = handler404_view
+# handler500 = handler500_view
 
 urlpatterns = [
+    path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('chat/', include('app_chat.urls')),
+    path('profile/', login_required(profile_view), name='profile'), 
+    path('mentions_legales/', mentions_legales, name='mentions_legales'), 
+
+    # path('chat/', include('app_chat.urls')),
     # path('product/', include('product.urls')),
 ]
