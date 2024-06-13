@@ -6,3 +6,6 @@ django-filter
 requests
 beautifulsoup4
 bbcode
+daphne
+django-allauth
+channels

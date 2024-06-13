@@ -1,0 +1,35 @@
+<h1>Search Users</h1>
+<input type="text" id="search" placeholder="Enter username to search">
+<div id="results"></div>
+
+<script>
+document.getElementById('search').addEventListener('keyup', function() {
+    var query = this.value;
+    if (query.length > 2) {
+        fetch(`/search_users/?q=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                let resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '';
+                data.forEach(user => {
+                    resultsDiv.innerHTML += `<div>${user.username} <button onclick="addFriend('${user.username}')">Add</button></div>`;
+                });
+            });
+    }
+});
+
+function addFriend(username) {
+    fetch(`/add_friend/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({username: username})
+    }).then(response => {
+        if (response.ok) {
+            // Handle successful addition
+        }
+    });
+}
+</script>
