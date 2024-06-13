@@ -7,6 +7,15 @@
 
 {% block content %}
 <div class="container">
+
+    <!-- Flèche de retour -->
+    <div class="back-arrow mt-3 mb-3">
+        <a href="{% url 'games_list' %}?page={{ page }}" class="text-white">
+            <i class="fas fa-arrow-left"></i> Retour aux jeux
+        </a>
+    </div>
+
+    
     <div class="card border-0 border16 transparent-dark white">
         <div class="card-header d-flex flex-wrap p-0">
             <div class="col-12 col-md-7 p-0">
@@ -60,21 +69,21 @@
                 </div>
             </div>
             {% else %}
-                <div class="list-group-item"><strong>Metacritic:</strong> Pas de score disponible</div>
+                <div class="list-group-item p-3"><strong>Metacritic:</strong> Pas de score disponible</div>
             {% endif %}
         </div>
     </div>
 
-    <div class="d-flex flex-wrap justify-content-around mt-3">
+    <div class="d-flex flex-wrap justify-content-evenly mt-3">
 
-        <div class="card cardDesc bg-steam-darker white col-12 col-md-8 p-3 mb-2 mb-md-0 border15">
+        <div class="card cardDesc bg-steam-darker white col-12 col-md-8 p-3 mb-2 mb-md-0 border15 h-fitcontent">
             <div class="d-flex flex-column">
                 {{ game.detailed_description|safe }}
             </div>
         </div>
 
         <div class="card transparent-dark white col-12 col-md-3 h-fitcontent mt-2 mt-md-0 border15">
-            <h2 class="text-center">Captures d'écran</h2>
+            <h3 class="text-center p-2 m-0">Captures d'écran</h3>
             {% for screenshot in game.screenshots %}
                 <div class="col-12 col-md-12 screenDiv">
                     <img src="{{ screenshot.path_thumbnail }}" alt="Screenshot" class="img-fluid screenImg" onclick="showImageModal(this.src)">

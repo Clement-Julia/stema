@@ -19,9 +19,15 @@ class GameController:
             request.session['games'] = games
         else:
             games = request.session['games']
+
+        search_query = request.GET.get('search', '').strip().lower()
+        if search_query:
+            filtered_games = [game for game in games if search_query in game['name'].strip().lower()]
+        else:
+            filtered_games = games
         
         page = request.GET.get('page', 1)
-        paginator = Paginator(games, 25)  # 25 jeux par page
+        paginator = Paginator(filtered_games, 25)  # 25 jeux par page
 
         try:
             games_page = paginator.page(page)
@@ -37,17 +43,16 @@ class GameController:
         for game, header_image in zip(games_page, header_images):
             game['header_image'] = header_image
 
-        games_json = json.dumps(list(games_page), default=str)
-
         return render(request, 'game_app/gamesDisplay.html', {
             'games': games_page,
-            'games_json': games_json
+            'page': page
         })
     
     @staticmethod
     def display_game_by_id(request, game_id):
         game = GameService.get_game_details(game_id)
-        return render(request, 'game_app/gameDetail.html', {'game': game})
+        page = request.GET.get('page', 1)
+        return render(request, 'game_app/gameDetail.html', {'game': game, 'page': page})
 
     @staticmethod
     def get_game_details(request, game_id):
