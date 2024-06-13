@@ -34,10 +34,10 @@ a[href] {
     position: relative;
 }
 
-a[href],
-a[href]:link,
-a[href]:visited,
-a[href]:active {
+.mods-list a[href],
+.mods-list a[href]:link,
+.mods-list a[href]:visited,
+.mods-list a[href]:active {
     text-decoration: none;
     color: #4e958b;
     padding-bottom: 3px;
@@ -72,7 +72,7 @@ a[href]:active {
     position: relative;
     margin: 10px 0;
     letter-spacing: 3px;
-    color: #152536;
+    color: white;
     font-family: "Grotesque Black", sans-serif;
     font-size: 1rem;
     text-transform: uppercase;
@@ -84,7 +84,7 @@ a[href]:active {
     margin-bottom: 10px;
     text-transform: uppercase;
     font-size: 0.85rem;
-    color: rgba(21, 37, 54, 0.7);
+    color: white;
     font-family: "Grotesque", sans-serif;
 }
 
@@ -101,7 +101,7 @@ a[href]:active {
     font-family: "Merriweather", sans-serif;
     line-height: 2;
     font-size: 0.95rem;
-    color: rgba(21, 37, 54, 0.7);
+    color: white;
     opacity: 0;
     transition: 0.5s 0.25s cubic-bezier(0.17, 0.67, 0.5, 1.03);
     max-height: 150px;
@@ -216,8 +216,7 @@ body {
 
     background-color: var(--circle-bg);
     margin-bottom: 1rem;
-    border-radius: min(8px, 0.5rem);
-
+    
     display: grid;
     grid-template-rows: 0fr 0fr;
     transition-timing-function: var(--slide-ease);
@@ -369,4 +368,38 @@ body {
     font-size: medium;
     color: black;
     /* z-index: 5; */
+}
+
+#accordionMods .accordion-item {
+    background: transparent;
+}
+
+#accordionMods .accordion-button {
+    background: #0b1017;
+    color: white;
+    box-shadow: none;
+}
+
+#accordionMods .accordion-item {
+    border: none;
+}
+
+#accordionMods .accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+}
+
+#accordionMods .accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+}
+
+#modalFiles .modal-content {
+    color: white;
+    background-color: #0b1017;
+}
+
+.btn-close {
+    --bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+    /* --bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e"); */
+    color: white;
+    background: transparent var(--bs-btn-close-bg) center / 1em auto no-repeat;
 }

@@ -2,12 +2,27 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import string
 
 NEXUSMODS_API_URL = 'https://api.nexusmods.com/v1/'
 
 class NexusModsService:
     @staticmethod
     def fetch_mods(game_domain_name):
+        if game_domain_name.split()[-1].isalpha():
+            roman_numerals = {'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5, 'VI': 6, 'VII': 7, 'VIII': 8, 'IX': 9, 'X': 10}
+            last_word = game_domain_name.split()[-1]
+            if last_word.upper() in roman_numerals:
+                try:
+                    decimal_number = roman_numerals[last_word.upper()]
+                    game_domain_name = game_domain_name.rsplit(' ', 1)[0] + ' ' + str(decimal_number)
+                except ValueError:
+                    pass
+
+        game_domain_name = game_domain_name.lower().replace(" ", "")
+        game_domain_name = game_domain_name.translate(str.maketrans('', '', string.punctuation))
+        game_domain_name = game_domain_name.replace("™", "")
+
         headers = {
             'apikey': os.environ.get('NEXUSMODS_API_KEY'),
             'Accept': 'application/json'
