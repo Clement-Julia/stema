@@ -23,7 +23,7 @@ from django.contrib.auth.decorators import login_required
 
 #,#, handler500_view
 
-# handler404 = handler404_view
+handler404 = handler404_view
 # handler500 = handler500_view
 from game_app.controllers.GameController import GameController
 
@@ -32,7 +32,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('game_app/', include('game_app.urls')),
     path('accounts/', include('allauth.urls')),
-    path('profile/', login_required(profile_view), name='profile'), 
     path('mentions_legales/', mentions_legales, name='mentions_legales'), 
     path('social/', include('app_chat.urls')),
 ]

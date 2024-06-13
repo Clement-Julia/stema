@@ -1,36 +1,30 @@
 <!-- navbar.html -->
 <nav class="navbar stemaNavbar navbar-expand-lg bg-steam-darker">
     <div class="container-fluid">
-        <a class="navbar-brand white white-h" href="{% url 'home' %}">Accueil</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link white white-h" aria-current="page" href="{% url 'profile' %}">Profil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link white white-h" aria-current="page" href="{% url 'friendlist' %}">Liste d'amis</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link white white-h" aria-current="page" href="{% url 'add_friend' %}">Rechercher des utilisateurs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link white white-h" aria-current="page" href="{% url 'chatroom' conversation_id=1 %}">Chat</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-                <!-- {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link white white-h" href="">Déconnexion</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link white white-h" href="">Connexion</a>
-                    </li>
-                {% endif %} -->
-            </ul>
-        </div>
+      <a class="navbar-brand text_navbar" href="{% url 'home' %}">Accueil</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav test_navbar">
+          
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link text_navbar" aria-current="page" href="{% url 'profile' %}">Profil</a>
+          </li>
+          <li class="nav-item">
+              <form class="d-flex" action="{% url 'account_logout' %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-outline-danger" type="submit">Déconnexion</button>
+              </form>          
+          </li>
+          {% else %}
+              <li class="nav-item">
+                <a class="nav-link active text_navbar" aria-current="page" href="{% url 'account_login' %}">Connexion</a>
+              </li>
+          {% endif %}
+
+        </ul>
+      </div>
     </div>
 </nav>

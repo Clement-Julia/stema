@@ -1,21 +1,28 @@
-   <h1>Add Friend</h1>
+{% extends "base.html" %}
+{% block title %}Profil{% endblock %} 
+{% block content %}
+    <div class="container">
+        <h1 class="text-center title_addfriends">Add Friend</h1>
 
-    <input type="text" id="search" placeholder="Enter username to search">
-    <div id="results"></div>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="search" placeholder="Enter username to search">
+        </div>
+        <div id="results" class="addfriends_username"></div>
 
-    <h2>Friend Requests</h2>
-    <ul>
-        {% for request in friend_requests %}
-            <li>
-                {{ request.from_user.username }}
-                <form method="post" action="{% url 'manage_friend_request' request.id %}">
-                    {% csrf_token %}
-                    <button type="submit" name="action" value="accept">Accept</button>
-                    <button type="submit" name="action" value="decline">Decline</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+        <h2 class=" text-center title_addfriends">Friend Requests</h2>
+        <ul class="list-group">
+            {% for request in friend_requests %}
+                <li class="list-group-item ">
+                    {{ request.from_user.username }}
+                    <form method="post" action="{% url 'manage_friend_request' request.id %}">
+                        {% csrf_token %}
+                        <button type="submit" name="action" value="accept" class="btn btn-success me-2">Accept</button>
+                        <button type="submit" name="action" value="decline" class="btn btn-danger">Decline</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
     <script>
         document.getElementById('search').addEventListener('keyup', function() {
@@ -52,7 +59,5 @@
                 }
             });
         }
-        
     </script>
-</body>
-</html>
+{% endblock %}

@@ -5,8 +5,11 @@
 <body>
     <h1>Profil de {{ request.user.username }}</h1>
     <p>Nom d'utilisateur: {{ request.user.username }}</p>
-    <p>Email: {{ request.user.email }}</p>
-    <!-- Ajoutez d'autres informations de profil ici -->
+    {% if request.user.email %}
+        <p>Email: {{ request.user.email }}</p>
+    {% else %}
+        <p>Email non disponible</p>
+    {% endif %}
 </body>
 </html>
 {% endblock %}

@@ -238,3 +238,70 @@ body {
 .back-arrow i {
     margin-right: 8px;
 }
+
+/* Mention légale */
+.div_mention_legale{
+    color: white;
+}
+
+/* profil user */
+.div_user_profil{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    color: red !important;
+}
+
+/* Friend liesy */
+.title_friendlist{
+    color: white;
+}
+
+/* Add friend */
+.title_addfriends{
+    color:white
+}
+.addfriends_username{
+    color: white;
+}
+
+/* Friend Chat */
+.title_friendchat{
+    color: white;
+}
+.chat-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    clear: both;
+}
+.message.self {
+    background-color: #DCF8C6;
+    float: right;
+}
+.message.other {
+    background-color: #E2E2E2;
+    float: left;
+}
+.message-content {
+    font-size: 16px;
+}
+.message-timestamp {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Navbar */
+.text_navbar{
+    color: white;
+}
+
+/* Profile conversation */
+.title_profil_conv{
+    color: white;
+}
