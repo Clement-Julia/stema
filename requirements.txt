@@ -6,3 +6,4 @@ django-filter
 daphne
 django-allauth
 channels
+jwt
