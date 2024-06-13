@@ -16,6 +16,32 @@ from django.contrib.auth.models import User
 from .models import UserProfile, Friendship, FriendRequest
 from django.http import JsonResponse
 
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def create_conversation(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        title = data.get('title')
+        friends_ids = data.get('friends')
+
+        if not friends_ids:
+            return JsonResponse({'status': 'error', 'message': 'No friends selected'})
+
+        friends = User.objects.filter(id__in=friends_ids)
+
+        if not friends.exists():
+            return JsonResponse({'status': 'error', 'message': 'Selected friends do not exist'})
+
+        conversation = Conversation.objects.create(title=title)
+        Membership.objects.create(conversation=conversation, member=request.user)
+
+        for friend in friends:
+            Membership.objects.create(conversation=conversation, member=friend)
+
+        return JsonResponse({'status': 'success', 'conversation_id': conversation.id})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 class ChatView(TemplateView):
     template_name = "chat.html"
@@ -42,9 +68,28 @@ class ProfileView(LoginRequiredMixin, View):
             user = get_object_or_404(User, pk=pk)
         else:
             user = request.user
-        
+
         user_profile, created = UserProfile.objects.get_or_create(user=user)
-        return render(request, 'profile.html', {'user_profile': user_profile})
+        conversations = Conversation.objects.filter(participants=user)
+        
+        # Récupérer les amis de l'utilisateur
+        # friends = User.objects.filter(
+        #     Q(friends__user1=user) | Q(_friends__user2=user)
+        # ).distinct()
+        friends = Friendship.objects.filter(
+            Q(user1=user) | Q(user2=user)
+        ).select_related('user1', 'user2')
+
+        for friend in friends:
+            if friend.user1 == user:
+                friend.conversation = Conversation.objects.filter(participants=friend.user2).filter(participants=user).first()
+            else:
+                friend.conversation = Conversation.objects.filter(participants=friend.user1).filter(participants=user).first()
+        return render(request, 'profile.html', {
+            'user_profile': user_profile,
+            'conversations': conversations,
+            'friends': friends,
+        })
 
 
 class FriendListView(LoginRequiredMixin, View):

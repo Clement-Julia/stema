@@ -10,3 +10,5 @@ daphne
 django-allauth
 channels
 jwt
+requests
+bs4

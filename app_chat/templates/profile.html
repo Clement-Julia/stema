@@ -1,7 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Profil{% endblock %} 
+{% block title %}Profil{% endblock %}
 {% block content %}
-
 <body>
     <h1>Profil de {{ request.user.username }}</h1>
     <p>Nom d'utilisateur: {{ request.user.username }}</p>
@@ -9,6 +8,115 @@
     <a href="{% url 'friendlist_with_pk' pk=user_profile.user.id %}">View Friend List</a>
     <a href="{% url 'add_friend' %}">Add Friends</a>
     <!-- Ajoutez d'autres informations de profil ici -->
+
+    <h2>Conversations</h2>
+    <ul>
+        {% for conversation in conversations %}
+            <li>
+                <a href="{% url 'chatroom' conversation.id %}">
+                    {% if conversation.title %}
+                        {{ conversation.title }}
+                    {% else %}
+                        {% for participant in conversation.participants.all %}
+                            {% if participant != request.user %}
+                                {{ participant.username }}{% if not forloop.last %}, {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createConversationModal">
+        Create New Conversation
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="createConversationModal" tabindex="-1" aria-labelledby="createConversationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createConversationModalLabel">Create New Conversation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="create-conversation-form">
+                        <div class="form-group">
+                            <label for="conversation-title">Conversation Title:</label>
+                            <input type="text" id="conversation-title" name="title" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="friend-select">Select Friends:</label>
+                            <select id="friend-select" class="form-control">
+                                <option value="" disabled selected>Choose friends</option>
+                                {% for friend in friends %}
+                                    
+                                    {% if friend.user1 == user %}
+                                        <option value="{{ friend.user2.id }}">{{ friend.user2.username }}</option>
+                                    {% else %}
+                                        <option value="{{ friend.user1.id }}">{{ friend.user1.username }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <button type="button" id="add-friend-btn" class="btn btn-secondary mt-2">Add Friend</button>
+                        </div>
+                        <div class="form-group">
+                            <h3>Selected Friends:</h3>
+                            <ul id="selected-friends-list" class="list-group"></ul>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Conversation</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('add-friend-btn').addEventListener('click', function() {
+            const select = document.getElementById('friend-select');
+            const selectedFriendId = select.value;
+            const selectedFriendName = select.options[select.selectedIndex].text;
+
+            if (selectedFriendId && !document.getElementById(`selected-friend-${selectedFriendId}`)) {
+                const selectedFriendsList = document.getElementById('selected-friends-list');
+                const li = document.createElement('li');
+                li.id = `selected-friend-${selectedFriendId}`;
+                li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+                li.textContent = selectedFriendName;
+                const removeButton = document.createElement('button');
+                removeButton.classList.add('btn', 'btn-danger', 'btn-sm');
+                removeButton.textContent = 'Remove';
+                removeButton.addEventListener('click', function() {
+                    li.remove();
+                });
+                li.appendChild(removeButton);
+                selectedFriendsList.appendChild(li);
+            }
+        });
+
+        document.getElementById('create-conversation-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const title = document.getElementById('conversation-title').value;
+            const selectedFriends = Array.from(document.querySelectorAll('#selected-friends-list li')).map(li => li.id.split('-')[2]);
+
+            fetch("{% url 'create_conversation' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({ title: title, friends: selectedFriends })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = `{% url 'chatroom' 0 %}`.replace('0', data.conversation_id);
+                } else {
+                    alert("Error: " + data.message);
+                }
+            });
+        });
+    </script>
 </body>
-</html>
 {% endblock %}
