@@ -295,3 +295,13 @@ body {
     font-size: 12px;
     color: #999;
 }
+
+/* Navbar */
+.text_navbar{
+    color: white;
+}
+
+/* Profile conversation */
+.title_profil_conv{
+    color: white;
+}
