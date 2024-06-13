@@ -1,4 +1,14 @@
-<h1>Profile of {{ user_profile.user.username }}</h1>
-<p>{{ user_profile.bio }}</p>
-<a href="{% url 'friendlist_with_pk' pk=user_profile.user.id %}">View Friend List</a>
-<a href="{% url 'add_friend' %}">Add Friends</a>
+{% extends "base.html" %}
+{% block title %}Profil{% endblock %} 
+{% block content %}
+
+<body>
+    <h1>Profil de {{ request.user.username }}</h1>
+    <p>Nom d'utilisateur: {{ request.user.username }}</p>
+    <p>Email: {{ request.user.email }}</p>
+    <a href="{% url 'friendlist_with_pk' pk=user_profile.user.id %}">View Friend List</a>
+    <a href="{% url 'add_friend' %}">Add Friends</a>
+    <!-- Ajoutez d'autres informations de profil ici -->
+</body>
+</html>
+{% endblock %}
