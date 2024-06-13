@@ -52,7 +52,7 @@
         <ul class="pagination justify-content-center">
             {% if games.has_previous %}
                 <li class="page-item"><a class="page-link" href="?page=1">&laquo; début</a></li>
-                <li class="page-item"><a class="page-link" href="?page={{ games.previous_page_number }}">précédant</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ games.previous_page_number }}">précédent</a></li>
             {% endif %}
 
             <li class="page-item active"><span class="page-link">Page {{ games.number }} sur {{ games.paginator.num_pages }}</span></li>

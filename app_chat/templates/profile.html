@@ -10,10 +10,10 @@
             <div class="col-md-6 offset-md-3">
                 <div class="card">
                     <div class="card-body">
-                        <h1 class="card-title">Profil de {{ request.user.username }}</h1>
-                        <p class="card-text">Nom d'utilisateur: {{ request.user.username }}</p>
-                        {% if request.user.email %}
-                            <p class="card-text">Email: {{ request.user.email }}</p>
+                        <h1 class="card-title">Profil de {{ user_profile.user.username }}</h1>
+                        <p class="card-text">Nom d'utilisateur: {{ user_profile.user.username }}</p>
+                        {% if user_profile.user.email %}
+                            <p class="card-text">Email: {{ user_profile.user.email }}</p>
                         {% else %}
                             <p class="card-text">Email : non disponible</p>
                         {% endif %}
@@ -39,7 +39,7 @@
                                 {% else %}
                                     <h5 class="card-title">
                                         {% for participant in conversation.participants.all %}
-                                            {% if participant != request.user %}
+                                            {% if participant != user_profile.user %}
                                                 {{ participant.username }}{% if not forloop.last %}, {% endif %}
                                             {% endif %}
                                         {% endfor %}

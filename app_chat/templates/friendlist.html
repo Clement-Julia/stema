@@ -16,7 +16,7 @@
               {{ friend.user1.username }}
             {% endif %}
           </h5>
-          <form method="post" action="{% url 'remove_friend' friend.id %}">
+          <form method="post" action="{% if friend.user1 == user  %} {% url 'remove_friend' friend.user2.id %} {% else %} {% url 'remove_friend' friend.user1.id %} {% endif %}">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Remove Friend</button>
           </form>
