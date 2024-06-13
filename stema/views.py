@@ -1,10 +1,7 @@
 from django.shortcuts import render
 
 def home(request):
-    context = {
-        'message': 'Bonjour, monde!'
-    }
-    return render(request, 'home/home.html', context)
+    return render(request, 'games_list')
 
 def profile_view(request):
     return render(request, 'user/profil.html')
