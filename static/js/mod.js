@@ -55,7 +55,7 @@ $(document).ready(function() {
     function download_modFiles(file_id, game_id) {
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/mods/proxy/",
+            url: "http://127.0.0.1:8000/game_app/mods/proxy/",
             data: {
                 fid: file_id,
                 game_id: game_id,

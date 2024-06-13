@@ -3,7 +3,8 @@
 *.pyo
 __pycache__/
 __pycache__\
-*.sqlite3
+*.sqlite
+*.djcache
 
 # Static files
 staticfiles/

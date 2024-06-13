@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'django_filters',
     'game_app',
     'channels',
-    'mods.apps.ModsConfig',
     'app_chat.apps.AppChatConfig'
 ]
 SITE_ID = 1
