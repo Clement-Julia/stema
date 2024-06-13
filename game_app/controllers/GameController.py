@@ -4,6 +4,7 @@ import json
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from game_app.services.ModService import NexusModsService
 from game_app.services.GameService import GameService
 
 class GameController:
@@ -47,7 +48,8 @@ class GameController:
     @staticmethod
     def display_game_by_id(request, game_id):
         game = GameService.get_game_details(game_id)
-        return render(request, 'game_app/gameDetail.html', {'game': game})
+        mods = NexusModsService.fetch_mods(game['name'])
+        return render(request, 'game_app/gameDetail.html', {'game': game, 'mods': mods})
 
     @staticmethod
     def get_game_details(request, game_id):

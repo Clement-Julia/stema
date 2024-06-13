@@ -9,3 +9,4 @@ bbcode
 daphne
 django-allauth
 channels
+jwt

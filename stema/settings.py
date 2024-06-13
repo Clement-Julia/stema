@@ -47,12 +47,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'django_filters',
     'game_app',
-    'django.contrib.humanize',
     'channels',
     'mods.apps.ModsConfig',
-    'django.contrib.humanize'
     'app_chat.apps.AppChatConfig'
 ]
 SITE_ID = 1
