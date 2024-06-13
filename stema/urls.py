@@ -32,7 +32,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('game_app/', include('game_app.urls')),
     path('accounts/', include('allauth.urls')),
-    path('profile/', login_required(profile_view), name='profile'), 
     path('mentions_legales/', mentions_legales, name='mentions_legales'), 
     path('social/', include('app_chat.urls')),
 ]
