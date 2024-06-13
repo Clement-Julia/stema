@@ -44,7 +44,6 @@ class GameService:
             if response.status_code == 200:
                 data = response.json().get(str(appid), {}).get('data', {})
                 if data:
-                    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                     print(GameService.get_metacritic_color(data.get('metacritic', {}).get('score')))
                     game_details = {
                         'name': data.get('name'),
