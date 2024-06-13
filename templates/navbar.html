@@ -1,18 +1,36 @@
 <!-- navbar.html -->
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light bg-steam-dark">
+<nav class="navbar stemaNavbar navbar-expand-lg bg-steam-darker">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'home' %}">Accueil</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">Profil</a>
-          </li>
-
-        </ul>
-      </div>
+        <a class="navbar-brand white white-h" href="{% url 'home' %}">Accueil</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link white white-h" aria-current="page" href="{% url 'profile' %}">Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link white white-h" aria-current="page" href="{% url 'friendlist' %}">Liste d'amis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link white white-h" aria-current="page" href="{% url 'add_friend' %}">Rechercher des utilisateurs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link white white-h" aria-current="page" href="{% url 'chatroom' conversation_id=1 %}">Chat</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <!-- {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link white white-h" href="">Déconnexion</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link white white-h" href="">Connexion</a>
+                    </li>
+                {% endif %} -->
+            </ul>
+        </div>
     </div>
-  </nav>
+</nav>
