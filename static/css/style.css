@@ -49,6 +49,9 @@ body {
 .white {
     color: #fff;
 }
+.white-h:hover {
+    color: #8a8a8a;
+}
 .fitcontent {
     width: fit-content;
 }

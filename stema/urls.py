@@ -28,9 +28,8 @@ handler404 = handler404_view
 from game_app.controllers.GameController import GameController
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('admin/', admin.site.urls),
     path('', GameController.home, name='home'),
+    path('admin/', admin.site.urls),
     path('game_app/', include('game_app.urls')),
     path('accounts/', include('allauth.urls')),
     path('profile/', login_required(profile_view), name='profile'), 
