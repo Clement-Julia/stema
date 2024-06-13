@@ -1,0 +1,3 @@
+{% for user in users %}
+    <div>{{ user.username }} <button onclick="addFriend('{{ user.username }}')">Add</button></div>
+{% endfor %}
