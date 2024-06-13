@@ -1,29 +1,33 @@
 <!-- navbar.html -->
-<nav class="navbar stemaNavbar navbar-expand-lg bg-steam-darker">
+<nav class="navbar stemaNavbar navbar-expand-lg navbar-bg px-2">
     <div class="container-fluid">
-      <a class="navbar-brand text_navbar" href="{% url 'home' %}">Accueil</a>
+      <a class="navbar-brand white white-h" href="{% url 'home' %}">Accueil</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav test_navbar d-flex w-100">
-          
-          {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link text_navbar" aria-current="page" href="{% url 'profile' %}">Profil</a>
-            </li>
-            <li class="nav-item ms-auto">
+        <ul class="navbar-nav d-flex justify-content-between w-100">
+          <div>
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link white white-h" aria-current="page" href="{% url 'profile' %}">Profil</a>
+              </li>
+            {% endif %}
+          </div>
+          <div>
+            {% if user.is_authenticated %}
+              <li class="nav-item">
                 <form class="d-flex" action="{% url 'account_logout' %}" method="post">
                   {% csrf_token %}
                   <button class="btn btn-outline-danger" type="submit">Déconnexion</button>
                 </form>          
-            </li>
-          {% else %}
-            <li class="nav-item">
-              <a class="nav-link active text_navbar" aria-current="page" href="{% url 'account_login' %}">Connexion</a>
-            </li>
-          {% endif %}
-
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="btn btn-outline-success" aria-current="page" href="{% url 'account_login' %}">Connexion</a>
+              </li>
+            {% endif %}
+          </div>
         </ul>
       </div>
     </div>
