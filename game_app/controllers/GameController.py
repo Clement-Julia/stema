@@ -27,6 +27,9 @@ class GameController:
         search_query = request.GET.get('search', '').strip().lower()
         filter_library = request.GET.get('filter_library') == 'on'
 
+        request.session['search_query'] = search_query
+        request.session['filter_library'] = filter_library
+
         if search_query:
             filtered_games = [game for game in games if search_query in game['name'].strip().lower()]
         else:
@@ -59,26 +62,35 @@ class GameController:
             'filter_library': filter_library,
             'search_query': search_query
         })
+    
+    @staticmethod
     def display_game_by_id(request, game_id):
         game = GameService.get_game_details(game_id)
         game_in_library = False
         if request.user.is_authenticated:
             game_in_library = GameLibrary.objects.filter(user=request.user, game_id=game_id).exists()
+        
         page = request.GET.get('page', 1)
+        search_query = request.session.get('search_query', '')
+        filter_library = request.session.get('filter_library', False)
+
         game['appid'] = game_id
         mods = NexusModsService.fetch_mods(game['name'])
         return render(request, 'game_app/gameDetail.html', {
             'game': game,
             'mods': mods,
             'page': page,
+            'search_query': search_query,
+            'filter_library': filter_library,
             'game_in_library': game_in_library
         })
-    
+        
     @staticmethod
     def get_game_details(request, game_id):
         game = GameService.get_game_details(game_id)
         return JsonResponse(game)
 
+    # Pour du debugging, supprime var cache/session
     @staticmethod
     def delete_games(request):
         if 'games' in request.session:
@@ -93,3 +105,10 @@ class GameController:
         if created:
             return HttpResponseRedirect(reverse('game_detail', args=[game_id]))
         return HttpResponseRedirect(reverse('game_detail', args=[game_id]) + '?already_in_library=true')
+    
+    @staticmethod
+    @login_required
+    def remove_game_from_library(request, game_id):
+        game = get_object_or_404(GameLibrary, user=request.user, game_id=game_id)
+        game.delete()
+        return HttpResponseRedirect(reverse('game_detail', args=[game_id]))

@@ -20,9 +20,9 @@
             <button class="btn btn-outline-primary" type="submit">Rechercher</button>
         </div>
         {% if user.is_authenticated %}
-            <div class="form-check form-switch mt-2">
+            <div class="form-check form-switch mt-3">
                 <input class="form-check-input" type="checkbox" id="filterLibrarySwitch" name="filter_library" {% if filter_library %}checked{% endif %} onchange="this.form.submit()">
-                <label class="form-check-label white" for="filterLibrarySwitch">Afficher ma bibliothèque</label>
+                <label class="form-check-label white" for="filterLibrarySwitch">Afficher les jeux de ma bibliothèque</label>
             </div>
         {% endif %}
     </form>
