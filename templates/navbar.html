@@ -8,9 +8,22 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
+          
+          {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">Profil</a>
           </li>
+          <li class="nav-item">
+              <form class="d-flex" action="{% url 'account_logout' %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-outline-danger" type="submit">Déconnexion</button>
+              </form>          
+          </li>
+          {% else %}
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'account_login' %}">Connexion</a>
+              </li>
+          {% endif %}
 
         </ul>
       </div>

@@ -1,24 +1,34 @@
-<h1>My Friends</h1>
-<ul>
-  {% for friend in friends %}
-  <li>
-    {% if friend.user1 == user %}
-        {{ friend.user2.username }}
-    {% else %}
-        {{ friend.user1.username }}
-    {% endif %}
-      <form method="post" action="{% url 'remove_friend' friend.id %}">
-        {% csrf_token %}
-        <button type="submit">Remove Friend</button>
-      </form>
-      <a href="{% url 'profile_with_pk' friend.pk %}">
-        <button>View Profile</button>
-      </a>
-      {% if friend.conversation %}
-        <a href="{% url 'chatroom' conversation_id=friend.conversation.id %}">
-          <button>Chat</button>
-        </a>
-      {% endif %}
-    </li>
-  {% endfor %}
-</ul>
+{% extends "base.html" %}
+{% block title %}Friend List{% endblock %} 
+{% block content %}
+
+<div class="container">
+  <h1 class="text-center title_friendlist">My Friends</h1>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+    {% for friend in friends %}
+    <div class="col mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            {% if friend.user1 == user %}
+              {{ friend.user2.username }}
+            {% else %}
+              {{ friend.user1.username }}
+            {% endif %}
+          </h5>
+          <form method="post" action="{% url 'remove_friend' friend.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Remove Friend</button>
+          </form>
+          <a href="{% url 'profile_with_pk' friend.pk %}" class="btn btn-primary">View Profile</a>
+          {% if friend.conversation %}
+            <a href="{% url 'chatroom' conversation_id=friend.conversation.id %}" class="btn btn-success">Chat</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

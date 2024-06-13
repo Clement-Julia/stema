@@ -3,12 +3,26 @@
 {% block content %}
 
 <body>
-    <h1>Profil de {{ request.user.username }}</h1>
-    <p>Nom d'utilisateur: {{ request.user.username }}</p>
-    <p>Email: {{ request.user.email }}</p>
-    <a href="{% url 'friendlist_with_pk' pk=user_profile.user.id %}">View Friend List</a>
-    <a href="{% url 'add_friend' %}">Add Friends</a>
-    <!-- Ajoutez d'autres informations de profil ici -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">Profil de {{ request.user.username }}</h1>
+                        <p class="card-text">Nom d'utilisateur: {{ request.user.username }}</p>
+                        {% if request.user.email %}
+                            <p class="card-text">Email: {{ request.user.email }}</p>
+                        {% else %}
+                            <p class="card-text">Email : non disponible</p>
+                        {% endif %}
+                        <a href="{% url 'friendlist_with_pk' pk=user_profile.user.id %}" class="btn btn-primary">Voir la liste d'amis</a>
+                        <a href="{% url 'add_friend' %}" class="btn btn-success">Ajouter des amis</a>
+                        <!-- Ajoutez d'autres informations de profil ici -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 {% endblock %}

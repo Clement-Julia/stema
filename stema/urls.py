@@ -23,7 +23,7 @@ from django.contrib.auth.decorators import login_required
 
 #,#, handler500_view
 
-# handler404 = handler404_view
+handler404 = handler404_view
 # handler500 = handler500_view
 from game_app.controllers.GameController import GameController
 

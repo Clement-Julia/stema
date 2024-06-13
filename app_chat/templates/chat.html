@@ -1,58 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Chat{% endblock %} 
+{% block content %}
 {% load static %}
-<head>
-    <title>Chat en discussion instantané</title>
-    <style>
-        .chat-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .message {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            clear: both;
-        }
-        .message.self {
-            background-color: #DCF8C6;
-            float: right;
-        }
-        .message.other {
-            background-color: #E2E2E2;
-            float: left;
-        }
-        .message-content {
-            font-size: 16px;
-        }
-        .message-timestamp {
-            font-size: 12px;
-            color: #999;
-        }
-    </style>
-</head>
-<body>
+
+<div class="container">
     <div class="chat-container">
-        <h1>Bienvenue sur le chat en discussion instantané !</h1>
+        <h1 class="mb-4 text-center title_friendchat">Bienvenue sur le chat en discussion instantané !</h1>
         
         <div id="chat-log">
             {% for message in conversation.message_set.all %}
-                <div class="message {% if message.sender.id == request.user.id %}self{% else %}other{% endif %}">
+                <div class="message {% if message.sender.id == request.user.id %}self{% else %}other{% endif %} mb-3">
                     <div class="message-content">{{ message.content }}</div>
-                    <div class="message-timestamp">{{ message.timestamp }}</div>
+                    <div class="message-timestamp text-muted">{{ message.timestamp }}</div>
                 </div>
             {% endfor %}
         </div>
         
-        <input type="text" id="chat-message-input" placeholder="Entrez votre message...">
-        <button id="chat-message-submit">Envoyer</button>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="chat-message-input" placeholder="Entrez votre message...">
+            <button class="btn btn-primary" type="button" id="chat-message-submit">Envoyer</button>
+        </div>
     </div>
+</div>
 
-    <script>
-        // Inject userId and conversationId into the script
-        const userId = '{{ request.user.id }}';
-        const conversationId = '{{ conversation.id }}';
-    </script>
-    <script src="{% static 'app_chat/js/chat.js' %}"></script>
-</body>
+<script>
+    // Inject userId and conversationId into the script
+    const userId = '{{ request.user.id }}';
+    const conversationId = '{{ conversation.id }}';
+</script>
+<script src="{% static 'app_chat/js/chat.js' %}"></script>
+{% endblock %}
