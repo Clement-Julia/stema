@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 import json
-
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -56,11 +56,20 @@ class ChatView(TemplateView):
             messages = Message.objects.filter(conversation=conversation).order_by('timestamp')
             context['conversation'] = conversation
             context['messages'] = messages
+            context['participants'] = conversation.participants.all()
         else:
             context['conversation'] = None
             context['messages'] = []
 
-        return context   
+        # Récupérer la liste des amis de l'utilisateur connecté
+        user = self.request.user
+        friends = Friendship.objects.filter(
+            Q(user1=user) | Q(user2=user)
+        ).select_related('user1', 'user2')
+
+        context['friends'] = friends
+
+        return context
 
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request, pk=None):
@@ -148,7 +157,7 @@ class ManageFriendRequestView(LoginRequiredMixin, View):
                     Friendship.objects.create(user1=request.user, user2=friend_request.from_user)
                     existing_conversation = Conversation.objects.filter(membership__member=request.user).filter(membership__member=friend_request.from_user).first()
                     if not existing_conversation:
-                        conversation = Conversation.objects.create(title=f"Conversation with {friend_request.from_user.username}")
+                        conversation = Conversation.objects.create()
                         Membership.objects.create(conversation=conversation, member=request.user)
                         Membership.objects.create(conversation=conversation, member=friend_request.from_user)
 
@@ -185,3 +194,17 @@ class RemoveFriendView(View):
         if friendship.user1 == request.user or friendship.user2 == request.user:
             friendship.delete()
         return redirect('friendlist')
+    
+@method_decorator(csrf_exempt, name='dispatch')
+class AddParticipantsView(LoginRequiredMixin, View):
+    def post(self, request):
+        data = json.loads(request.body)
+        conversation_id = data.get('conversation_id')
+        friend_id = data.get('friend_id')
+
+        conversation = get_object_or_404(Conversation, id=conversation_id)
+        
+        friend = get_object_or_404(User, id=friend_id)
+        Membership.objects.create(conversation=conversation, member=friend)
+        
+        return JsonResponse({'status': 'success'})

@@ -9,6 +9,7 @@
     <div class="col mb-4">
       <div class="card">
         <div class="card-body">
+          
           <h5 class="card-title">
             {% if friend.user1 == user %}
               {{ friend.user2.username }}
@@ -16,15 +17,17 @@
               {{ friend.user1.username }}
             {% endif %}
           </h5>
-          <form method="post" action="{% if friend.user1 == user  %} {% url 'remove_friend' friend.user2.id %} {% else %} {% url 'remove_friend' friend.user1.id %} {% endif %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Remove Friend</button>
-          </form>
-          <a href="{% url 'profile_with_pk' friend.pk %}" class="btn btn-primary">View Profile</a>
-          {% if friend.conversation %}
-            <a href="{% url 'chatroom' conversation_id=friend.conversation.id %}" class="btn btn-success">Chat</a>
-          {% endif %}
-        </div>
+          <a href="{% if friend.user1 == user  %} {% url 'profile_with_pk' friend.user2.pk %} {% else %} {% url 'profile_with_pk' friend.user1.pk %} {% endif %}" class="btn btn-primary">View Profile</a>
+            {% if request.user.id == user_profile.user.id %}
+              {% if friend.conversation %}
+              <a href="{% url 'chatroom' conversation_id=friend.conversation.id %}" class="btn btn-success">Chat</a>
+              {% endif %}
+              <form method="post" action="{% if friend.user1 == user  %} {% url 'remove_friend' friend.user2.id %} {% else %} {% url 'remove_friend' friend.user1.id %} {% endif %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Remove Friend</button>
+              </form>
+            {% endif%}
+          </div>
       </div>
     </div>
     {% endfor %}
