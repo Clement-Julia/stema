@@ -6,22 +6,22 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav test_navbar">
+        <ul class="navbar-nav test_navbar d-flex w-100">
           
           {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link text_navbar" aria-current="page" href="{% url 'profile' %}">Profil</a>
-          </li>
-          <li class="nav-item">
-              <form class="d-flex" action="{% url 'account_logout' %}" method="post">
-                {% csrf_token %}
-                <button class="btn btn-outline-danger" type="submit">Déconnexion</button>
-              </form>          
-          </li>
+            <li class="nav-item">
+              <a class="nav-link text_navbar" aria-current="page" href="{% url 'profile' %}">Profil</a>
+            </li>
+            <li class="nav-item ms-auto">
+                <form class="d-flex" action="{% url 'account_logout' %}" method="post">
+                  {% csrf_token %}
+                  <button class="btn btn-outline-danger" type="submit">Déconnexion</button>
+                </form>          
+            </li>
           {% else %}
-              <li class="nav-item">
-                <a class="nav-link active text_navbar" aria-current="page" href="{% url 'account_login' %}">Connexion</a>
-              </li>
+            <li class="nav-item">
+              <a class="nav-link active text_navbar" aria-current="page" href="{% url 'account_login' %}">Connexion</a>
+            </li>
           {% endif %}
 
         </ul>

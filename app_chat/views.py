@@ -70,6 +70,7 @@ class ProfileView(LoginRequiredMixin, View):
             user = request.user
 
         user_profile, created = UserProfile.objects.get_or_create(user=user)
+        print(user_profile)
         conversations = Conversation.objects.filter(participants=user)
         
         # Récupérer les amis de l'utilisateur
@@ -183,4 +184,4 @@ class RemoveFriendView(View):
         friendship = get_object_or_404(Friendship, id=friend_id)
         if friendship.user1 == request.user or friendship.user2 == request.user:
             friendship.delete()
-        return redirect('friend_list')
+        return redirect('friendlist')

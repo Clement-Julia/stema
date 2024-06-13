@@ -29,7 +29,7 @@ body {
     background-color: rgba(9, 91, 139, 0.1);
 }
 .border15 {
-    border-radius: 15px;
+    border-radius: 15px !important;
 }
 .border16 {
     border-radius: 16px;
