@@ -107,4 +107,4 @@ class GameService:
                 return "yellow"
             else:
                 return "red"
-        return "green" 
+        return "green"

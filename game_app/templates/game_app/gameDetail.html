@@ -5,12 +5,17 @@
 
 {% block title %}{{ game.name }}{% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mod.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="container">
 
     <!-- Flèche de retour -->
     <div class="back-arrow mt-3 mb-3">
-        <a href="{% url 'games_list' %}?page={{ page }}" class="text-white">
+        <a href="{% url 'games_list' %}?page={{ page }}&search={{ search_query }}&filter_library={{ filter_library|yesno:"on," }}" class="text-white">
             <i class="fas fa-arrow-left"></i> Retour aux jeux
         </a>
     </div>
@@ -55,21 +60,65 @@
         </div>
     </div>
 
+    <div id="accordionMods" class="accordion mt-3 {% if mods|length == 0 %}d-none{% endif %}">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"> Mods </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionMods">
+                <div class="accordion-body">
+                    <div class="mods-list justify-content-between row">
+                        {% for mod in mods %}
+                            {% if mod.status == "published" %}
+                                <article class="cardMod px-0">
+                                    <div class="thumb" style="background: url('{{ mod.picture_url }}') no-repeat center; background-size: cover"></div>
+                                    <div class="infos">
+                                        <h2 class="title">{{ mod.name|slice:":20" }}{% if mod.name|length > 20 %}...{% endif %}</h2>
+                                        <h3 class="date">by {{ mod.author }}</h3>
+                                        <h3 class="seats">{{ mod.created_time|date:"d M Y" }}</h3>
+                                        <p class="txt custom-scrollbar">
+                                            {{ mod.summary|safe }}
+                                        </p>
+                                        <h3 class="details">
+                                            <a href="https://nexusmods.com/{{ mod.domain_name }}/mods/{{ mod.mod_id }}" target="_blank">More info</a>
+                                        </h3>
+                                        <h3 class="download_modFiles" data-modid="{{ mod.mod_id }}" data-gameid="{{ mod.game_id }}" data-game="{{ mod.domain_name }}">
+                                            <i class="fa-solid fa-lg fa-cloud-arrow-down"></i>
+                                        </h3>
+                                    </div>
+                                </article>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% if user.is_authenticated %}
-    {% if game_in_library %}
-        <div class="d-flex justify-content-center my-3">
-            <button class="btn btn-success" disabled>Jeu déjà dans la bibliothèque</button>
-        </div>
-    {% else %}
-        <div class="d-flex justify-content-center my-3">
-            <form method="POST" action="{% url 'add_game_to_library' game.appid %}">
-                {% csrf_token %}
-                <input type="hidden" name="game_name" value="{{ game.name }}">
-                <button type="submit" class="btn btn-outline-primary">Ajouter le jeu à ma librairie</button>
-            </form>
-        </div>
+        {% if game_in_library %}
+            <div class="d-flex justify-content-center my-3">
+                <button class="btn btn-success" disabled>Jeu déjà dans la bibliothèque</button>
+                <form method="POST" action="{% url 'remove_game_from_library' game.appid %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger ms-2">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </form>
+            </div>
+        {% else %}
+            <div class="d-flex justify-content-center my-3">
+                <form method="POST" action="{% url 'add_game_to_library' game.appid %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="game_name" value="{{ game.name }}">
+                    <button type="submit" class="btn btn-outline-primary">Ajouter le jeu à ma librairie</button>
+                </form>
+                <button class="btn btn-outline-secondary ms-2" disabled>
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        {% endif %}
     {% endif %}
-{% endif %}
 
     <div class="d-flex justify-content-end my-3">
         <div class="card transparent-dark white fitcontent border15 p-0">
@@ -115,6 +164,21 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalFiles" tabindex="-1" aria-labelledby="modalFilesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalFilesLabel">Fichiers</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <main class="mainFiles">
+                </main>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function showImageModal(src) {
         var modal = document.getElementById("modalImage");
@@ -129,4 +193,8 @@
     }
 </script>
 
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'mods/script.js' %}"></script>
 {% endblock %}
