@@ -24,4 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', GameController.home, name='home'),
     path('game_app/', include('game_app.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('social/', include('app_chat.urls')),
 ]

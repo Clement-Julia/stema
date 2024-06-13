@@ -1,0 +1,24 @@
+<h1>My Friends</h1>
+<ul>
+  {% for friend in friends %}
+  <li>
+    {% if friend.user1 == user %}
+        {{ friend.user2.username }}
+    {% else %}
+        {{ friend.user1.username }}
+    {% endif %}
+      <form method="post" action="{% url 'remove_friend' friend.id %}">
+        {% csrf_token %}
+        <button type="submit">Remove Friend</button>
+      </form>
+      <a href="{% url 'profile_with_pk' friend.pk %}">
+        <button>View Profile</button>
+      </a>
+      {% if friend.conversation %}
+        <a href="{% url 'chatroom' conversation_id=friend.conversation.id %}">
+          <button>Chat</button>
+        </a>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

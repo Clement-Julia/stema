@@ -1,0 +1,4 @@
+<h1>Profile of {{ user_profile.user.username }}</h1>
+<p>{{ user_profile.bio }}</p>
+<a href="{% url 'friendlist_with_pk' pk=user_profile.user.id %}">View Friend List</a>
+<a href="{% url 'add_friend' %}">Add Friends</a>

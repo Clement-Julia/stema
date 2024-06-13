@@ -1,6 +1,8 @@
 django
 djangorestframework
 django-dotenv
-psycopg2
 markdown
 django-filter
+daphne
+django-allauth
+channels
