@@ -62,9 +62,12 @@
 
     <div id="accordionMods" class="accordion mt-3 {% if mods|length == 0 %}d-none{% endif %}">
         <div class="accordion-item border15">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed border15" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"> Mods </button>
-            </h2>
+            
+                <button class="accordion-button collapsed border15 customBg" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <img class="me-3" src="{% static 'images/nm_logo.png' %}">
+                    <h2 class="accordion-header display-1">Mods</h2>
+                </button>
+            
             <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionMods">
                 <div class="accordion-body">
                     <div class="mods-list justify-content-between row">

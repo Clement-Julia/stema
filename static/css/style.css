@@ -166,6 +166,11 @@ body {
     border: 1px solid #0E2435;
     
 }
+.customBg {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
 @media only screen and (min-width: 768px) {
     .metacontainer {
         margin-right: 2.5%;

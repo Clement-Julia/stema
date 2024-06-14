@@ -375,7 +375,9 @@ body {
 }
 
 #accordionMods .accordion-button {
-    background: #0b1017;
+    background: rgba(11, 162, 249, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: white;
     box-shadow: none;
 }
