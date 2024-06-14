@@ -11,5 +11,6 @@ urlpatterns = [
     path('delete_games/', GameController.delete_games, name='delete_games'),
     path('add_game_to_library/<int:game_id>/', GameController.add_game_to_library, name='add_game_to_library'),
     path('remove_game_from_library/<int:game_id>/', GameController.remove_game_from_library, name='remove_game_from_library'),
+    path('mods/files/<str:game_domain_name>/<int:mod_id>/', GameController.get_mods_files, name='get_mods_files'),
     path('mods/proxy/', proxy_view, name='proxy'),
 ]

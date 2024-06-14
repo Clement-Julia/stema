@@ -112,3 +112,8 @@ class GameController:
         game = get_object_or_404(GameLibrary, user=request.user, game_id=game_id)
         game.delete()
         return HttpResponseRedirect(reverse('game_detail', args=[game_id]))
+        
+    @staticmethod
+    def get_mods_files(request, game_domain_name, mod_id):
+        files = NexusModsService.fetch_files(game_domain_name, mod_id)
+        return JsonResponse(files)
