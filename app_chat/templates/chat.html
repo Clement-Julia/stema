@@ -2,15 +2,49 @@
 {% block title %}Chat{% endblock %} 
 {% block content %}
 {% load static %}
-
+{% block css %}
+    {% comment %} <link rel="stylesheet" href="{% static 'app_chat/csschat.css' %}"> {% endcomment %}
+{% endblock %}
 <div class="container">
     <div class="chat-container">
         <h1 class="mb-4 text-center title_friendchat">Bienvenue sur le chat en discussion instantané !</h1>
         
+        <!-- Menu Hamburger -->
+        {% if participants|length > 2 %}
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+                ☰ Participants
+            </button>
+
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasMenuLabel">Liste des Participants</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <!-- Modal pour ajouter des amis -->
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addFriendModal">
+                        Ajouter un ami
+                    </button>
+                    <ul class="list-group">
+                        {% for participant in participants %}
+                            <li class="list-group-item">
+                                {{ participant.username }}
+                                <span id="status-{{ participant.id }}" class="status-indicator offline"></span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
         <div id="chat-log">
             {% for message in conversation.message_set.all %}
                 <div class="message {% if message.sender.id == request.user.id %}self{% else %}other{% endif %} mb-3">
-                    <div class="message-content">{{ message.content }}</div>
+                    <div class="message-content">
+                        {% if participants|length > 2 %}
+                            <strong>{{ message.sender.username }}</strong><br>
+                        {% endif %}
+                        {{ message.content }}
+                    </div>
                     <div class="message-timestamp text-muted">{{ message.timestamp }}</div>
                 </div>
             {% endfor %}
@@ -20,13 +54,66 @@
             <input type="text" class="form-control" id="chat-message-input" placeholder="Entrez votre message...">
             <button class="btn btn-primary" type="button" id="chat-message-submit">Envoyer</button>
         </div>
+
+
+
+        <div class="modal fade" id="addFriendModal" tabindex="-1" aria-labelledby="addFriendModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addFriendModalLabel">Ajouter un ami à la conversation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <select id="friend-select" class="form-select">
+                            {% for friend in friends %}
+                                {% if friend.user1.id == request.user.id %}
+                                    {% if friend.user2 not in participants %}
+                                        <option value="{{ friend.user2.id }}">{{ friend.user2.username }}</option>
+                                    {% endif %}
+                                {% else %}
+                                    {% if friend.user1 not in participants %}
+                                        <option value="{{ friend.user1.id }}">{{ friend.user1.username }}</option>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <button id="add-friend-btn" class="btn btn-primary mt-3">Ajouter</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <script>
-    // Inject userId and conversationId into the script
     const userId = '{{ request.user.id }}';
     const conversationId = '{{ conversation.id }}';
+    const conversationParticipants =  "{{ participants }}" ;
+    {% comment %} const conversationParticipants = {{ participants|json_script:"participants" }}; {% endcomment %}
 </script>
-<script src="{% static 'app_chat/js/chat.js' %}"></script>
+<script src="{% static 'app_chat/js/chat.js' %}">
+   
+</script>
+
+<style>
+    .status-indicator {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-left: 10px;
+    }
+    .status-indicator.online {
+        background-color: green;
+    }
+    .status-indicator.offline {
+        background-color: red;
+    }
+</style>
+
 {% endblock %}

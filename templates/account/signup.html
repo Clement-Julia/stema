@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load allauth i18n %}
+{% block title %}Inscription{% endblock %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/account.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container mt-4 auth-text">
+    <h2>Inscription</h2>
+    {% if not SOCIALACCOUNT_ONLY %}
+        {% url 'account_signup' as action_url %}
+        <form method="post" action="{{ action_url }}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {{ redirect_field }}
+            <button type="submit" class="btn btn-primary">S'inscrire</button>
+        </form>
+    {% endif %}
+    {% if SOCIALACCOUNT_ENABLED %}
+        {% include "socialaccount/snippets/login.html" %}
+    {% endif %}
+    <p>Vous avez déjà un compte ? <a href="{{ login_url }}">Se connecter</a></p>
+</div>
+{% endblock %}

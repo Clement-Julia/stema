@@ -31,7 +31,7 @@ class Friendship(models.Model):
 
 
 class Conversation(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100,null=True)
     is_group = models.BooleanField(default=False)
     participants = models.ManyToManyField(User, through='Membership', related_name='conversations')
 class Message(models.Model):

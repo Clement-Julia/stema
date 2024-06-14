@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ProfileView, FriendListView, AddFriendView, ManageFriendRequestView, SearchUsersView,RemoveFriendView,ChatView,create_conversation
+from .views import ProfileView, FriendListView, AddFriendView, ManageFriendRequestView, SearchUsersView,RemoveFriendView,ChatView,AddParticipantsView,create_conversation
 
 urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('remove_friend/<int:friend_id>/', RemoveFriendView.as_view(), name='remove_friend'),
     path('chat/<int:conversation_id>/', ChatView.as_view(), name='chatroom'),
     path('create_conversation/', create_conversation, name='create_conversation'),
+    path('add_participants/', AddParticipantsView.as_view(), name='add_participants'),
 ]
