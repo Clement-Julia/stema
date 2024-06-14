@@ -8,7 +8,7 @@ $(document).ready(function() {
         
         $.ajax({
             type: "GET",
-            url: `/mods/files/${game}/${mod_id}/`,
+            url: `/game_app/mods/files/${game}/${mod_id}/`,
             success: function (data) {
                 data = data.files.sort((a, b) => b.uploaded_timestamp - a.uploaded_timestamp);
                 data.forEach(function(file) {
